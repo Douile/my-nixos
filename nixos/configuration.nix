@@ -91,18 +91,25 @@
      neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
      lapce
      git
-     ripgrep
-     fzf
-     fd
      eza
      gnupg
      pinentry-curses
+     curl
+
+     # Shell tools
+     ripgrep
+     fzf
+     fd
+     file
+     jq
+     yq
 
      # Compilers
      cargo
      rust-analyzer
      rustup
      gcc
+     clang
      nodejs
      deno
      bun
