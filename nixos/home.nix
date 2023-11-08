@@ -114,6 +114,7 @@
     };
   };
 
+
   # Configure eza
   programs.eza = {
     enable = true;

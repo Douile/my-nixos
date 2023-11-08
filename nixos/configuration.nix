@@ -142,6 +142,9 @@
     pinentryFlavor = "curses";
   };
 
+  # Enable nix-ld
+  programs.nix-ld.enable = true;
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
@@ -167,7 +170,6 @@
 
   # Enable flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
 
   # Home manager
   home-manager = {
