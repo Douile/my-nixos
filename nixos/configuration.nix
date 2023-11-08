@@ -114,6 +114,10 @@
      deno
      bun
 
+     # Containers
+     podman
+     podman-compose
+
      # Shells
      zsh
      dash
@@ -148,6 +152,12 @@
 
   # Enable spice agent
   services.spice-vdagentd.enable = true;
+
+  # Enable podman
+  virtualisation.podman = {
+    enable = true;
+    dockerSocket.enable = true;
+  };
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [ 22 ];
