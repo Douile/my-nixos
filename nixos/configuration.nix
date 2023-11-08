@@ -59,6 +59,18 @@
   # Use dash for /bin/sh
   environment.binsh = "${pkgs.dash}/bin/dash";
 
+  # Mount src filesystem
+  fileSystems."/src" = {
+    fsType = "virtiofs";
+    device = "src_mnt";
+    noCheck = true;
+    neededForBoot = false;
+    options = [
+      "defaults"
+      "nofail"
+    ];
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.dev = {
     isNormalUser = true;
