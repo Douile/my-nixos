@@ -71,6 +71,18 @@
     ];
   };
 
+  # Mount tmp filesystem
+  fileSystems."/tmp" = {
+    fsType = "tmpfs";
+    device = "none";
+    noCheck = true;
+    neededForBoot = true;
+    options = [
+      "defaults"
+      "huge=always"
+    ];
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.dev = {
     isNormalUser = true;
