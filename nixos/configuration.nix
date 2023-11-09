@@ -107,6 +107,7 @@
      gnupg
      pinentry-curses
      curl
+     pre-commit
 
      # Shell tools
      ripgrep
