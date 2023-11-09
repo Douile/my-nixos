@@ -126,6 +126,11 @@
      nodejs
      deno
      bun
+     python311
+     go
+     gopls
+     go-outline
+     gnumake
 
      # Containers
      podman
