@@ -118,8 +118,6 @@
      yq
 
      # Compilers
-     cargo
-     rust-analyzer
      rustup
      gcc
      clang
