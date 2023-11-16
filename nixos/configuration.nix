@@ -129,6 +129,7 @@
      gopls
      go-outline
      gnumake
+     protobuf
 
      # Containers
      podman
