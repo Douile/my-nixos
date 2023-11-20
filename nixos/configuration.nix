@@ -101,7 +101,6 @@
   environment.systemPackages = with pkgs; [
      # Dev environment
      neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     lapce
      git
      eza
      gnupg
