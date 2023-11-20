@@ -133,6 +133,7 @@
      # Containers
      podman
      podman-compose
+     act
 
      # Shells
      zsh
@@ -176,6 +177,7 @@
   virtualisation.podman = {
     enable = true;
     dockerSocket.enable = true;
+    dockerCompat = true;
   };
 
   # Open ports in the firewall.

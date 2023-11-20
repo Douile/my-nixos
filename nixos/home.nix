@@ -75,6 +75,7 @@
   home.sessionVariables = {
     EDITOR = "nvim";
     GOPATH = "/src/go-path/";
+    DOCKER_HOST = "unix://$XDG_RUNTIME_DIR/podman/podman.sock";
   };
 
   # Let Home Manager install and manage itself.
