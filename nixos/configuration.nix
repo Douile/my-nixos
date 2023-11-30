@@ -200,6 +200,7 @@
 
   # Enable storage optimisation
   nix.optimise.automatic = true;
+  nix.gc.automatic = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
