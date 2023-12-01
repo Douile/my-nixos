@@ -39,15 +39,9 @@
   # Disable root user
   users.users.root.hashedPassword = lib.mkForce "!";
 
-  # Remove dangerous polkit
-  security.polkit.extraConfig = lib.mkForce "";
-
   # Remove nixos user privileges
   users.users.nixos.extraGroups = lib.mkForce [ "networkmanager" "video" ];
   nix.settings.trusted-users = lib.mkForce [ "root" ];
-
-  # Disable default packages
-  environment.defaultPackages = lib.mkForce [];
 
   # Setup librewolf
   programs.firefox = {
@@ -57,8 +51,8 @@
 
     preferences = {
       # Disable javascript
-      "javascript.enabled" = false;
-      "javascript.options.wasm" = false;
+      "javascript.enabled" = 0;
+      "javascript.options.wasm" = 0;
 
       # Disable OCSP queries
       "security.OCSP.enabled" = 0;
@@ -67,8 +61,8 @@
       "network.http.referer.XOriginPolicy" = 2;
 
       # Enable autoscroll
-      "middlemouse.paste" = false;
-      "general.autoScroll" = true;
+      "middlemouse.paste" = 0;
+      "general.autoScroll" = 1;
 
       # Prevent Extensions from accessing internet
       "extensions.webextensions.base-content-security-policy" =

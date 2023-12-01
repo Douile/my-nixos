@@ -6,7 +6,10 @@
       webIso = nixos.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          "${nixos}/nixos/modules/installer/cd-dvd/installation-cd-graphical-base.nix"
+          ./profiles/some-hardware.nix
+          "${nixos}/nixos/modules/profiles/hardened.nix"
+          ./profiles/guest-additions-qemu.nix
+          ./base/cd-graphical-base.nix
           ./web/web.nix
         ];
       };
