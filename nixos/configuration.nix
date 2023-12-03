@@ -92,6 +92,7 @@
     openssh = {
       authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgfKjKKJfDBlPimzK3UxymYVWqK0TQCeXyil+YwkKsn generic-key"
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJGwn7Pov8wdjGYDz/1NBi15OWo9AxH3fHs19Eqw+CGh default-ed25519"
       ];
     };
   };
