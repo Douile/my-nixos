@@ -210,6 +210,8 @@
 
       -- or iterpolate files like this:
 
+      ${builtins.readFile ./nvim/keybinds.lua}
+
       ${builtins.readFile ./nvim/options.lua}
     '';
 
