@@ -140,6 +140,8 @@
       rnix-lsp
     ];
 
+    coc.enable = true;
+
     # Plugins
     plugins = with pkgs.vimPlugins; [
       {
@@ -202,6 +204,8 @@
         plugin = nvim-lastplace;
         config = toLua "require(\"nvim-lastplace\").setup()";
       }
+
+      coc-tsserver
     ];
 
     # Lua config
