@@ -185,7 +185,7 @@
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 8000 ];
+  networking.firewall.allowedTCPPorts = [ 22 3000 8000 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
@@ -199,6 +199,18 @@
     users = {
       dev = import ./home.nix;
     };
+  };
+
+  # Enable vscode server
+  services.openvscode-server = {
+    host = "0.0.0.0";
+    telemetryLevel = "off";
+
+    port = 3000;
+
+    user = "dev";
+
+    enable = true;
   };
 
   # Enable storage optimisation
