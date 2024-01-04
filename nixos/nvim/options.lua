@@ -11,7 +11,9 @@ vim.opt.signcolumn = "yes";
 -- Set tab to 2 width spaces
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
+vim.opt.expandtab = true;
 
 -- Spellcheck
 vim.opt.spell = true;
 vim.opt.spelllang = "en_gb";
+
