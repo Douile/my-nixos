@@ -205,12 +205,19 @@
   services.openvscode-server = {
     host = "0.0.0.0";
     telemetryLevel = "off";
+    withoutConnectionToken = true;
 
     port = 3000;
 
     user = "dev";
 
     enable = true;
+
+    extraPackages = with pkgs; [
+      rust-analyzer
+      go
+      gopls
+    ];
   };
 
   # Enable storage optimisation
