@@ -88,6 +88,7 @@
     isNormalUser = true;
     description = "dev";
     extraGroups = [ "networkmanager" "wheel" ];
+    linger = true;
     packages = with pkgs; [];
     openssh = {
       authorizedKeys.keys = [
