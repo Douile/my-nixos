@@ -162,6 +162,9 @@
   programs.gnupg.agent = {
     enable = true;
     pinentryFlavor = "curses";
+    enableSSHSupport = true;
+    enableExtraSocket = true;
+    enableBrowserSocket = true;
   };
 
   # Enable nix-ld
@@ -218,7 +221,13 @@
       rust-analyzer
       go
       gopls
+      nix
+      openssl
     ];
+
+    extraEnvironment = {
+      PKG_CONFIG_PATH = "/run/current-system/sw/lib/pkgconfig";
+    };
   };
 
   # Enable storage optimisation
