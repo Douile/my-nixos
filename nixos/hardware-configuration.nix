@@ -26,6 +26,7 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp2s0.useDHCP = lib.mkDefault true;
+  networking.interfaces.enp2s0.mtu = lib.mkDefault 1420;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 }

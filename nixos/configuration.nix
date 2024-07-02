@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./libvirt-client.nix
       inputs.home-manager.nixosModules.home-manager
     ];
 
@@ -45,9 +46,9 @@
   };
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "gb";
-    xkbVariant = "";
+    variant = "";
   };
 
   # Configure console keymap
@@ -80,6 +81,9 @@
     options = [
       "defaults"
       "huge=always"
+      "nodev"
+      "nosuid"
+      "size=20%"
     ];
   };
 
@@ -87,15 +91,34 @@
   users.users.dev = {
     isNormalUser = true;
     description = "dev";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "plugdev" ];
     linger = true;
-    packages = with pkgs; [];
+    packages = with pkgs; [
+      (import ./libvirt-client/build.nix)
+    ];
     openssh = {
       authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgfKjKKJfDBlPimzK3UxymYVWqK0TQCeXyil+YwkKsn generic-key"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJGwn7Pov8wdjGYDz/1NBi15OWo9AxH3fHs19Eqw+CGh default-ed25519"
       ];
     };
+  };
+
+  users.users.ansible = {
+    isNormalUser = true;
+    description = "ansible";
+    linger = true;
+    packages = with pkgs; [
+      ansible
+      ansible-lint
+      ansible-later
+      ansible-language-server
+      ansible-doctor
+    ];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgfKjKKJfDBlPimzK3UxymYVWqK0TQCeXyil+YwkKsn generic-key"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJGwn7Pov8wdjGYDz/1NBi15OWo9AxH3fHs19Eqw+CGh default-ed25519"
+    ];
   };
 
   # List packages installed in system profile. To search, run:
@@ -119,33 +142,23 @@
      file
      jq
      yq
-     hyperfine
-
-     # Compilers
-     rustup
-     gcc
-     clang
-     nodejs
-     deno
-     bun
-     python311
-     go
-     gopls
-     go-outline
-     gnumake
-     protobuf
 
      # Containers
      podman
      podman-compose
-     act
 
      # Shells
      zsh
      dash
+     tmux
      
      # Home manager
      home-manager
+  ];
+
+  # Packages to pull udev rules from 
+  services.udev.packages = with pkgs; [
+    picotool
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -161,7 +174,7 @@
   # Setup gpg
   programs.gnupg.agent = {
     enable = true;
-    pinentryFlavor = "curses";
+    pinentryPackage = pkgs.pinentry-curses;
     enableSSHSupport = true;
     enableExtraSocket = true;
     enableBrowserSocket = true;
@@ -173,7 +186,11 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+
+    settings.X11Forwarding = true;
+  };
 
   # Enable qemu guest-agent
   services.qemuGuest.enable = true;
@@ -214,6 +231,11 @@
     port = 3000;
 
     user = "dev";
+    group = "dev";
+    extraGroups = [
+      "openvscode-server"
+      "plugdev"
+    ];
 
     enable = true;
 
@@ -223,6 +245,7 @@
       gopls
       nix
       openssl
+      ccls
     ];
 
     extraEnvironment = {
@@ -233,6 +256,7 @@
   # Enable storage optimisation
   nix.optimise.automatic = true;
   nix.gc.automatic = true;
+  nix.settings.auto-optimise-store = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

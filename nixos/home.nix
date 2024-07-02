@@ -100,7 +100,7 @@
   # Configure zsh
   programs.zsh = {
     enable = true;
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
 
     # Configure oh-my-zsh
@@ -120,7 +120,6 @@
   # Configure eza
   programs.eza = {
     enable = true;
-    enableAliases = true;
   };
 
   # Configure neovim
@@ -137,7 +136,6 @@
     # Required extra packages
     extraPackages = with pkgs; [
       lua-language-server
-      rnix-lsp
     ];
 
     coc.enable = true;
