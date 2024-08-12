@@ -8,7 +8,6 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./libvirt-client.nix
       inputs.home-manager.nixosModules.home-manager
     ];
 
@@ -93,9 +92,7 @@
     description = "dev";
     extraGroups = [ "networkmanager" "wheel" "plugdev" ];
     linger = true;
-    packages = with pkgs; [
-      (import ./libvirt-client/build.nix)
-    ];
+    packages = with pkgs; [];
     openssh = {
       authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgfKjKKJfDBlPimzK3UxymYVWqK0TQCeXyil+YwkKsn generic-key"
@@ -104,22 +101,22 @@
     };
   };
 
-  users.users.ansible = {
-    isNormalUser = true;
-    description = "ansible";
-    linger = true;
-    packages = with pkgs; [
-      ansible
-      ansible-lint
-      ansible-later
-      ansible-language-server
-      ansible-doctor
-    ];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgfKjKKJfDBlPimzK3UxymYVWqK0TQCeXyil+YwkKsn generic-key"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJGwn7Pov8wdjGYDz/1NBi15OWo9AxH3fHs19Eqw+CGh default-ed25519"
-    ];
-  };
+  #users.users.ansible = {
+  #  isNormalUser = true;
+  #  description = "ansible";
+  #  linger = true;
+  #  packages = with pkgs; [
+  #    ansible
+  #    ansible-lint
+  #    ansible-later
+  #    ansible-language-server
+  #    ansible-doctor
+  #  ];
+  #  openssh.authorizedKeys.keys = [
+  #    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILgfKjKKJfDBlPimzK3UxymYVWqK0TQCeXyil+YwkKsn generic-key"
+  #    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJGwn7Pov8wdjGYDz/1NBi15OWo9AxH3fHs19Eqw+CGh default-ed25519"
+  #  ];
+  #};
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -190,6 +187,7 @@
     enable = true;
 
     settings.X11Forwarding = true;
+    settings.PermitRootLogin = "no";
   };
 
   # Enable qemu guest-agent
@@ -206,7 +204,7 @@
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 3000 8000 ];
+  networking.firewall.interfaces."enp2s0".allowedTCPPorts = [ 22 3000 8000 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
@@ -240,12 +238,14 @@
     enable = true;
 
     extraPackages = with pkgs; [
+      cargo
       rust-analyzer
       go
       gopls
       nix
       openssl
       ccls
+      python3
     ];
 
     extraEnvironment = {

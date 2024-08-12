@@ -1,5 +1,5 @@
 {
-  description = "My system flake";
+  description = "My system flakes";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -9,9 +9,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    microvm = {
+      url = "github:astro/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: 
+  outputs = { self, nixpkgs, microvm, ... }@inputs: 
   let
     system = "x86_64-linux";
     
@@ -30,6 +35,22 @@
 
       modules = [
         ./nixos/configuration.nix
+      ];
+    };
+
+    localgpt = nixpkgs.lib.nixosSystem {
+      specialArgs = { inherit inputs system; };
+
+      modules = [
+        ./remote/localgpt/configuration.nix
+      ];
+    };
+
+    supervisor = nixpkgs.lib.nixosSystem {
+      specialArgs = { inherit inputs system microvm; };
+
+      modules = [
+        ./remote/supervisor/configuration.nix
       ];
     };
   };
