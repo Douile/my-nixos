@@ -1,13 +1,16 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ inputs, config, pkgs, ... }:
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  inputs,
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.grub.enable = true;
@@ -80,13 +83,11 @@
     };
   };
 
- 
-
   users.users.localgpt = {
     isNormalUser = true;
     description = "localgpt";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = [  ];
+    extraGroups = ["networkmanager" "wheel"];
+    packages = [];
     initialPassword = "nix";
     openssh = {
       authorizedKeys.keys = [
@@ -99,10 +100,10 @@
   # $ nix search wget
   # TODO: Add definitions for environments then include them individually
   environment.systemPackages = with pkgs; [
-     # Dev environment
-     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    # Dev environment
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
 
-     dash
+    dash
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -115,7 +116,6 @@
   # Enable zsh
   programs.zsh.enable = true;
 
-
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
@@ -123,33 +123,33 @@
     settings.PermitRootLogin = "prohibit-password";
   };
 
-    services = {
-      open-webui = {
-        enable = true;
-        package = pkgs.open-webui;
-        port = 8080;
-        host = "0.0.0.0";
-        environment = {
-          WEBUI_AUTH = "False";
-          ENABLE_OLLAMA_API = "True";
-          OLLAMA_BASE_URL = "http://127.0.0.1:11434";
-          OLLAMA_API_BASE_URL = "http://127.0.0.1:11434/api";
-          ENABLE_OPENAI_API = "False";
-          DEVICE_TYPE = "cpu";
-          ENABLE_RAG_HYBRID_SEARCH = "True";
-          RAG_EMBEDDING_ENGINE = "ollama";
-          RAG_EMBEDDING_MODEL = "mxbai-embed-large:latest";
-          RAG_EMBEDDING_MODEL_AUTO_UPDATE = "True";
-          RAG_RERANKING_MODEL_AUTO_UPDATE = "True";
-          ENABLE_RAG_WEB_SEARCH = "False";
-          ENABLE_IAMGE_GENERATION = "True";
-        };
-      };
-
-      ollama = {
-        enable = true;
+  services = {
+    open-webui = {
+      enable = true;
+      package = pkgs.open-webui;
+      port = 8080;
+      host = "0.0.0.0";
+      environment = {
+        WEBUI_AUTH = "False";
+        ENABLE_OLLAMA_API = "True";
+        OLLAMA_BASE_URL = "http://127.0.0.1:11434";
+        OLLAMA_API_BASE_URL = "http://127.0.0.1:11434/api";
+        ENABLE_OPENAI_API = "False";
+        DEVICE_TYPE = "cpu";
+        ENABLE_RAG_HYBRID_SEARCH = "True";
+        RAG_EMBEDDING_ENGINE = "ollama";
+        RAG_EMBEDDING_MODEL = "mxbai-embed-large:latest";
+        RAG_EMBEDDING_MODEL_AUTO_UPDATE = "True";
+        RAG_RERANKING_MODEL_AUTO_UPDATE = "True";
+        ENABLE_RAG_WEB_SEARCH = "False";
+        ENABLE_IAMGE_GENERATION = "True";
       };
     };
+
+    ollama = {
+      enable = true;
+    };
+  };
 
   # Enable qemu guest-agent
   services.qemuGuest.enable = true;
@@ -158,7 +158,7 @@
   services.spice-vdagentd.enable = true;
 
   # Enable flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   # Enable storage optimisation
   nix.optimise.automatic = true;
@@ -172,5 +172,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
-
 }

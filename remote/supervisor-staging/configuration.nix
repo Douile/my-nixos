@@ -10,43 +10,9 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./vms.nix
+    ../components/minimise-storage.nix
   ];
-
-  environment.persistence."/nix/persist" = {
-    directories = [
-      "/etc/nixos" # nixos system config files, can be considered optional
-      "/srv" # service data
-      "/var/lib" # system service persistent data
-      "/var/log" # the place that journald dumps it logs to
-    ];
-  };
-
-  environment.etc."ssh/ssh_host_rsa_key".source = "/nix/persist/etc/ssh/ssh_host_rsa_key";
-  environment.etc."ssh/ssh_host_rsa_key.pub".source = "/nix/persist/etc/ssh/ssh_host_rsa_key.pub";
-  environment.etc."ssh/ssh_host_ed25519_key".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key";
-  environment.etc."ssh/ssh_host_ed25519_key.pub".source = "/nix/persist/etc/ssh/ssh_host_ed25519_key.pub";
-
-  services.openssh = {
-    enable = true;
-    openFirewall = true;
-    allowSFTP = false;
-    challengeResponseAuthentication = false;
-    extraConfig = ''
-      AllowTcpForwarding yes
-      X11Forwarding no
-      AllowAgentForwarding no
-      AllowStreamLocalForwarding no
-      AuthenticationMethods publickey
-    '';
-  };
-
-  users.users.root.initialPassword = "toor";
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINJ5YB/4Des3q9zw2KTldv1mT9Xz9ZD1vpuYyZWH5ytq dev@nix-devbox"
-  ];
-
-  security.sudo.enable = false;
-  environment.defaultPackages = lib.mkForce [];
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
@@ -54,9 +20,10 @@
   # boot.loader.grub.efiInstallAsRemovable = true;
   # boot.loader.efi.efiSysMountPoint = "/boot/efi";
   # Define on which hard drive you want to install Grub.
-  boot.loader.grub.device = "/dev/vda"; # or "nodev" for efi only
+  # boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
+  boot.loader.grub.device = "/dev/vda";
 
-  # networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -124,8 +91,13 @@
 
   # List services that you want to enable:
 
+  users.users."root".openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINJ5YB/4Des3q9zw2KTldv1mT9Xz9ZD1vpuYyZWH5ytq dev@nix-devbox"
+  ];
+
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
+  networking.firewall.allowedTCPPorts = [22];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

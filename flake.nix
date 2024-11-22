@@ -1,5 +1,5 @@
 {
-  description = "My system flakes";
+  description = "My system flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -8,15 +8,9 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    microvm = {
-      url = "github:astro/microvm.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
   };
 
-  outputs = { self, nixpkgs, microvm, ... }@inputs: 
+  outputs = { self, nixpkgs, ... }@inputs: 
   let
     system = "x86_64-linux";
     
@@ -25,35 +19,29 @@
 
       config.allowUnfree = false;
     };
-
   in
-  {
+    {
 
-  nixosConfigurations = {
-    myNixos = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs system; };
+    formatter = pkgs.alejandra;
 
-      modules = [
-        ./nixos/configuration.nix
-      ];
+
+    nixosConfigurations = {
+      myNixos = nixpkgs.lib.nixosSystem {
+        specialArgs = { inherit inputs system; };
+
+        modules = [
+          ./nixos/configuration.nix
+        ];
+      };
     };
 
-    localgpt = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs system; };
-
-      modules = [
-        ./remote/localgpt/configuration.nix
-      ];
+    devShells = {
+      nvChad = nixpkgs.lib.mkShell {
+        buildInputs = [
+          
+        ];
+      };
     };
-
-    supervisor = nixpkgs.lib.nixosSystem {
-      specialArgs = { inherit inputs system microvm; };
-
-      modules = [
-        ./remote/supervisor/configuration.nix
-      ];
-    };
-  };
 
   };
 }
