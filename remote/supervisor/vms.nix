@@ -68,15 +68,15 @@ in {
     internalInterfaces = [networkName];
   };
 
-  services.dnsmasq = {
-    enable = true;
+  #services.dnsmasq = {
+  #  enable = true;
 
-    settings = {
-      domain-needed = true;
-      dhcp-range = ["10.0.0.2,10.0.0.254"];
-      bind-interfaces = [networkName];
-    };
-  };
+  #  settings = {
+  #    domain-needed = true;
+  #    dhcp-range = ["10.0.0.2,10.0.0.254"];
+  #    bind-interfaces = [networkName];
+  #  };
+  #};
 
   # microvm = {
   #   autostart = [

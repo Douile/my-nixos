@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}: {
+{config, ...}: {
   documentation = {
     enable = false;
     man.enable = false;

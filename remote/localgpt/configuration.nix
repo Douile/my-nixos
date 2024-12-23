@@ -17,7 +17,7 @@
   boot.loader.grub.device = "/dev/vda";
   boot.loader.grub.useOSProber = true;
 
-  sound.enable = false;
+  #sound.enable = false;
 
   networking.hostName = "nix-localgpt"; # Define your hostname.
 

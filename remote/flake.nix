@@ -2,7 +2,8 @@
   description = "My server flakes";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    #nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     impermanence.url = "github:nix-community/impermanence";
 
@@ -12,6 +13,13 @@
       url = "github:astro/microvm.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # disko.url = "github:nix-community/disko";
   };
 
   outputs = {
@@ -19,6 +27,7 @@
     nixpkgs,
     impermanence,
     deploy-rs,
+    sops-nix,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -34,7 +43,12 @@
 
       overlays = [
         deploy-rs.overlay
-        (self: super: { deploy-rs = { inherit (pkgs) deploy-rs; lib = super.deploy-rs.lib; }; })
+        (self: super: {
+          deploy-rs = {
+            inherit (pkgs) deploy-rs;
+            lib = super.deploy-rs.lib;
+          };
+        })
       ];
     };
   in {
@@ -63,6 +77,7 @@
 
         modules = [
           ./supervisor/configuration.nix
+          sops-nix.nixosModules.sops
         ];
       };
 
